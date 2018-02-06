@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Servicio Express</string>
+    <string name="lb_user">Usuario:</string>
+    <string name="lb_password">Contraseña:</string>
+    <string name="btn_enter">Ingresar</string>
+    <string name="btn_registerclient">Registrar Cliente</string>
+    <string name="btn_registerorder">Registrar Pedido</string>
+    <string name="btn_clientlist">Lista de Clientes</string>
+    <string name="btn_clientorders">Lista de Pedidos</string>
+    <string name="btn_locations">Localizacion de Clientes</string>
+    <string name="lb_photo">Foto</string>
+    <string name="lb_register">Registro de Cliente</string>
+    <string name="view_clientlist">Lista de Clientes</string>
+    <string name="txt_phoneNumber">Número de Telefono</string>
+    <string name="txt_clientName">Nombre de Cliente</string>
+    <string name="txt_welcome">Bienvenido:</string>
+
+    <string name="link_register">Registrarse</string>
+    <string name="err_user">Usuario Incorrecto</string>
+    <string name="err_password">Contraseña Incorrecta</string>
+    <string name="lb_name">Nombre</string>
+    <string name="lb_lastname">Apellido</string>
+    <string name="lb_username">Nombre de Usuario</string>
+    <string name="lb_userpassword">Contraseña</string>
+    <string name="lb_passwordagain">Repetir Contraseña</string>
+    <string name="lb_phonenumber">Nro de Celular</string>
+    <string name="lb_location">Dirección</string>
+    <string name="lb_birthday">Fecha de Nacimiento</string>
+    <string name="btn_register">Registar</string>
+    <string name="err_rname">Nombre Invalido</string>
+    <string name="err_rlastname">Apellido Invalido</string>
+    <string name="err_rusername">Nombre de Usuario Invalido</string>
+    <string name="err_rpassword">Contraseña Invalida</string>
+    <string name="err_rpasswordagain">La repeticion de la contraseña debe ser igual a la contraseña</string>
+    <string name="err_rphonenumber">Numero de Celular debe ser numero entero</string>
+</resources>

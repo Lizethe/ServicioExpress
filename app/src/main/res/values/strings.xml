@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Express Service</string>
+    <string name="lb_user">User:</string>
+    <string name="lb_password">Password:</string>
+    <string name="btn_enter">Sing In</string>
+    <string name="btn_registerclient">Register Client</string>
+    <string name="btn_registerorder">Register Order</string>
+    <string name="btn_clientlist">Client List</string>
+    <string name="btn_clientorders">Order List</string>
+    <string name="btn_locations">Client Locations</string>
+    <string name="lb_photo">Photo</string>
+    <string name="lb_register">Client Registration</string>
+    <string name="view_clientlist">Client List</string>
+    <string name="txt_phoneNumber">Phone Number</string>
+    <string name="txt_clientName">Client Name</string>
+    <string name="txt_welcome">Welcome:</string>
+
+
+    <string name="link_register">Sing Up</string>
+    <string name="err_user">Incorrect User</string>
+    <string name="err_password">Incorrect Password</string>
+    <string name="lb_name">Name</string>
+    <string name="lb_lastname">Last Name</string>
+    <string name="lb_username">Username</string>
+    <string name="lb_userpassword">Password</string>
+    <string name="lb_passwordagain">Password Again</string>
+    <string name="lb_phonenumber">Phone Number</string>
+    <string name="lb_location">Home Address</string>
+    <string name="lb_birthday">Birthday</string>
+    <string name="btn_register">Register</string>
+    <string name="err_rname">Name is Invalid</string>
+    <string name="err_rlastname">Last Name is Invalid</string>
+    <string name="err_rusername">Username is Invalid</string>
+    <string name="err_rpassword">Password is Invalid</string>
+    <string name="err_rpasswordagain">Password Again should be equals to Password</string>
+    <string name="err_rphonenumber">Phone Number should be Integer Number</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
