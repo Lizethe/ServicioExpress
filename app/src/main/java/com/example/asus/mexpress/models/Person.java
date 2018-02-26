@@ -1,11 +1,8 @@
 package com.example.asus.mexpress.models;
 
 import java.util.Date;
-import java.util.UUID;
 
-import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmQuery;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
@@ -13,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by ASUS on 11/11/2017.
  */
 
-public class Client extends RealmObject {
+public class Person extends RealmObject {
     @PrimaryKey
     private String id;
     private String name;
@@ -21,6 +18,9 @@ public class Client extends RealmObject {
     private Integer phoneNumber;
     private String location;
     private Date birthday;
+    private byte[] photo;
+    private String type;
+    private String userId;
     @Ignore
     private String age;
 
@@ -76,9 +76,33 @@ public class Client extends RealmObject {
         this.birthday = birthday;
     }
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return "Client{" +
+        return "Person{" +
                 "name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", PhoneNumber='" + phoneNumber + '\'' +

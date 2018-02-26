@@ -72,8 +72,8 @@ public class CreateAccountUserActivity extends AppCompatActivity {
             this.username.setError(this.getApplicationContext().getString(R.string.err_user));
             return false;
         }else{
-            RealmQuery<User> user = this.myRealm.where(User.class).equalTo("username", lUsername);
-            if(user.count() > 0){
+            User user = this.myRealm.where(User.class).equalTo("username", lUsername).findFirst();
+            if(user != null){
                 this.username.setError(this.getApplicationContext().getString(R.string.err_username_exists));
                 return false;
             }
@@ -101,6 +101,7 @@ public class CreateAccountUserActivity extends AppCompatActivity {
         user.setPassword(this.pwd.getText().toString());
         user.setType(this.userType.getSelectedItem().toString());
         session.saveUser(user_local);
+        session.saveType(user.getType());
         Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
         startActivity(i);
     }

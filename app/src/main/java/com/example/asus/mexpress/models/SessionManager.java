@@ -28,7 +28,7 @@ public class SessionManager {
     }
 
     public void saveType(String type) {
-        editor.putString(USER, type);
+        editor.putString(TYPE, type);
         editor.commit();
     }
 

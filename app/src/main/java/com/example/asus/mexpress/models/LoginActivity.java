@@ -37,28 +37,22 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     }
 
     public void validateFields(View view) {
-        String user_local = this.user.getText().toString();
-        boolean validate = this.loginPresentx.validateFields(user_local, this.pwd.getText().toString());
-        if (validate && this.accountExists()) {
-            session.saveUser(user_local);
-            Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
-            startActivity(i);
-        }
-    }
-
-    public boolean accountExists() {
         String lUsername = this.user.getText().toString();
         String lPasswd = this.pwd.getText().toString();
-        RealmQuery<User> userReg = this.myRealm.where(User.class)
+        boolean validate = this.loginPresentx.validateFields(lUsername, this.pwd.getText().toString());
+        User userReg = this.myRealm.where(User.class)
                 .equalTo("username", lUsername)
-                .equalTo("password", lPasswd);
-        if (userReg.count() > 0) {
-            return true;
+                .equalTo("password", lPasswd)
+                .findFirst();
+        System.out.println("Usuario: " + userReg);
+        if (validate && userReg != null) {
+            session.saveUser(lUsername);
+            session.saveType(userReg.getType());
+            Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
+            startActivity(i);
         } else {
             this.user.setError(this.getApplicationContext().getString(R.string.err_user_pass));
-            return false;
         }
-
     }
 
     public void createAccountUser(View view) {

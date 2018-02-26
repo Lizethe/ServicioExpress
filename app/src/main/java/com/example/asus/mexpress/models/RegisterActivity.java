@@ -2,6 +2,8 @@ package com.example.asus.mexpress.models;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.example.asus.mexpress.Interfaces.IRegisterClientView;
 import com.example.asus.mexpress.R;
 import com.example.asus.mexpress.presenters.RegisterClientPresentex;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
     private static final int PICK_IMAGE = 100;
     private Realm myRealm;
     private RecyclerView recyclerView;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         this.myRealm = Realm.getDefaultInstance();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        session = new SessionManager(getApplicationContext());
     }
 
     private void openGallery() {
@@ -105,22 +109,32 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
     }
 
     private void saveClient(Realm realm) {
-        Client client = realm.createObject(Client.class, UUID.randomUUID().toString());
-        client.setName(this.name.getText().toString());
-        client.setLastName(this.lastName.getText().toString());
-        client.setPhoneNumber(Integer.parseInt(this.phoneNumber.getText().toString()));
-        client.setLocation(this.location.getText().toString());
+        Person person = realm.createObject(Person.class, UUID.randomUUID().toString());
+        person.setName(this.name.getText().toString());
+        person.setLastName(this.lastName.getText().toString());
+        person.setPhoneNumber(Integer.parseInt(this.phoneNumber.getText().toString()));
+        person.setLocation(this.location.getText().toString());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        try{
+        person.setType(Type.CLIENT.toString());
+        try {
             Date local_birthday = formatter.parse(this.birthday.getText().toString());
-            client.setBirthday(local_birthday);
-        }catch (ParseException e) {
+            person.setBirthday(local_birthday);
+            Bitmap bmp = ((BitmapDrawable) photo.getDrawable()).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            person.setPhoto(byteArray);
+            User userInSesion = this.myRealm.where(User.class)
+                    .equalTo("username", session.getUser())
+                    .equalTo("type", session.getType()).findFirst();
+            person.setUserId(userInSesion.getId());
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-        RealmResults<Client> list = this.myRealm.where(Client.class).findAll();
-        Intent i = new Intent(getApplicationContext(), ClientListActivity.class);
+        RealmResults<Person> list = this.myRealm.where(Person.class).findAll();
+        Intent i = new Intent(getApplicationContext(), PersonListActivity.class);
         startActivity(i);
     }
 
