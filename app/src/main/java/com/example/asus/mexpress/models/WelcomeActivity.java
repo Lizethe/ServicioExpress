@@ -30,10 +30,18 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void verifyUserType() {
-        if (session.getType().equals("Client")) {
-            register.setVisibility(View.GONE);
-            list.setText("Delivery Man List");
-            maps.setText("Delivery Man Locations");
+        switch (session.getType()) {
+            case "Client":
+                register.setVisibility(View.GONE);
+                list.setText("Delivery Man List");
+                maps.setText("Delivery Man Locations");
+                break;
+            case "Administrator":
+                register.setVisibility(View.GONE);
+                list.setText("Person List");
+                maps.setText("Person Locations");
+                break;
+            default: break;
         }
     }
 

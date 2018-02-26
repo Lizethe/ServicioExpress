@@ -15,6 +15,8 @@ import com.example.asus.mexpress.Interfaces.ILoginView;
 import com.example.asus.mexpress.R;
 import com.example.asus.mexpress.presenters.LoginPresentex;
 
+import java.util.UUID;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
@@ -34,6 +36,28 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         this.loginPresentx = new LoginPresentex(getApplicationContext(), this);
         Realm.init(getApplicationContext());
         this.myRealm = Realm.getDefaultInstance();
+        this.createAdminUser();
+    }
+
+    public void createAdminUser() {
+        User userReg = this.myRealm.where(User.class)
+                .equalTo("name", "Administrator")
+                .equalTo("username", "Admin")
+                .equalTo("password", "admin123")
+                .equalTo("type", "Administrator")
+                .findFirst();
+        if (userReg == null) {
+            this.myRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    User user = realm.createObject(User.class, UUID.randomUUID().toString());
+                    user.setName("Administrator");
+                    user.setUsername("Admin");
+                    user.setPassword("admin123");
+                    user.setType("Administrator");
+                }
+            });
+        }
     }
 
     public void validateFields(View view) {

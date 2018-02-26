@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import android.net.Uri;
+import android.widget.TextView;
 
 import com.example.asus.mexpress.Interfaces.IRegisterClientPresentex;
 import com.example.asus.mexpress.Interfaces.IRegisterClientView;
@@ -35,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
     IRegisterClientPresentex iRegisterPresentex;
     private ImageView photo;
     private Uri imageUri;
+    private TextView title;
     private static final int PICK_IMAGE = 100;
     private Realm myRealm;
     private RecyclerView recyclerView;
@@ -44,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        session = new SessionManager(getApplicationContext());
         this.photo = (ImageView) findViewById(R.id.photo);
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +54,10 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
                 openGallery();
             }
         });
+        title = (TextView) findViewById(R.id.lb_register);
+        if (session.getType().equals("Administrator")) {
+            title.setText("Person Register");
+        }
         this.name = (EditText) findViewById(R.id.txt_name);
         this.lastName = (EditText) findViewById(R.id.txt_lastname);
         this.phoneNumber = (EditText) findViewById(R.id.txt_phonenumber);
@@ -74,7 +81,6 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         this.myRealm = Realm.getDefaultInstance();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        session = new SessionManager(getApplicationContext());
     }
 
     private void openGallery() {
@@ -115,7 +121,11 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         person.setPhoneNumber(Integer.parseInt(this.phoneNumber.getText().toString()));
         person.setLocation(this.location.getText().toString());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        person.setType(Type.CLIENT.toString());
+        if (session.getType().equals("Client")) {
+            person.setType(Type.DELIVERY_MAN.toString());
+        } else {
+            person.setType(Type.CLIENT.toString());
+        }
         try {
             Date local_birthday = formatter.parse(this.birthday.getText().toString());
             person.setBirthday(local_birthday);

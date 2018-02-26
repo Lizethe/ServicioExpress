@@ -45,26 +45,32 @@ public class PersonListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-    private ArrayList<Person> getListPersonByUserType(){
+    private ArrayList<Person> getListPersonByUserType() {
         Type userType = null;
-        if (session.getType().equals("Client")){
-            title.setText("Delivery Man List");
-            addPerson.setVisibility(View.GONE);
-            userType = Type.DELIVERY_MAN;
-        }else{
-            userType = Type.CLIENT;
-        }
         User userInSesion = this.myRealm.where(User.class)
                 .equalTo("username", session.getUser())
                 .equalTo("type", session.getType()).findFirst();
-        RealmResults<Person> list = this.myRealm.where(Person.class)
-                .equalTo("type", userType.toString())
-                .equalTo("userId", userInSesion.getId())
-                .findAll();
+        RealmResults<Person> list = null;
+        if (session.getType().equals("Client")) {
+            title.setText("Delivery Man List");
+            addPerson.setVisibility(View.GONE);
+            userType = Type.DELIVERY_MAN;
+            list = this.myRealm.where(Person.class)
+                    .equalTo("type", userType.toString())
+                    .findAll();
+        } else if (session.getType().equals("Administrator")) {
+            title.setText("Person List");
+            list = this.myRealm.where(Person.class).findAll();
+        } else {
+            userType = Type.CLIENT;
+            list = this.myRealm.where(Person.class)
+                    .equalTo("type", userType.toString())
+                    .equalTo("userId", userInSesion.getId())
+                    .findAll();
+        }
+
         ArrayList<Person> list_persons = new ArrayList<>();
-        int i = 0;
         for (Person c : list) {
-            System.out.println(c);
             list_persons.add(c);
         }
         return list_persons;
