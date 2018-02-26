@@ -19,7 +19,10 @@
 
     <string name="link_register">Sing Up</string>
     <string name="err_user">Incorrect User</string>
+    <string name="err_user_pass">Incorrect User or Password</string>
     <string name="err_password">Incorrect Password</string>
+    <string name="err_passwordagain">Incorrect Password Again</string>
+    <string name="err_username_exists">Username already exits</string>
     <string name="lb_name">Name</string>
     <string name="lb_lastname">Last Name</string>
     <string name="lb_username">Username</string>
@@ -28,12 +31,23 @@
     <string name="lb_phonenumber">Phone Number</string>
     <string name="lb_location">Home Address</string>
     <string name="lb_birthday">Birthday</string>
-    <string name="btn_register">Register</string>
+    <string name="lb_user_type">User Type</string>
+    <string name="btn_register">Create Account</string>
+    <string name="btn_create">Create</string>
     <string name="err_rname">Name is Invalid</string>
     <string name="err_rlastname">Last Name is Invalid</string>
     <string name="err_rusername">Username is Invalid</string>
     <string name="err_rpassword">Password is Invalid</string>
     <string name="err_rpasswordagain">Password Again should be equals to Password</string>
     <string name="err_rphonenumber">Phone Number should be Integer Number</string>
-    <string name="title_activity_maps">Map</string>
+
+    <string name="title_activity_maps">Current Place Details</string>
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">No places found, because location permission is disabled.</string>
+    <string name="option_get_place">Get place</string>
+    <string name="pick_place">Choose a place</string>
+    <string-array name="list_user_type">
+        <item>Client</item>
+        <item>Delivery Man</item>
+    </string-array>
 </resources>

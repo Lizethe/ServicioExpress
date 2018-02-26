@@ -18,7 +18,10 @@
 
     <string name="link_register">Registrarse</string>
     <string name="err_user">Usuario Incorrecto</string>
+    <string name="err_user_pass">Usuario o Contraseña Incorrectos</string>
     <string name="err_password">Contraseña Incorrecta</string>
+    <string name="err_username_exists">El Nombre de usuario ya existe</string>
+    <string name="err_passwordagain">Contraseña Repetida Incorrecta</string>
     <string name="lb_name">Nombre</string>
     <string name="lb_lastname">Apellido</string>
     <string name="lb_username">Nombre de Usuario</string>
@@ -27,11 +30,18 @@
     <string name="lb_phonenumber">Nro de Celular</string>
     <string name="lb_location">Dirección</string>
     <string name="lb_birthday">Fecha de Nacimiento</string>
-    <string name="btn_register">Registar</string>
+    <string name="lb_user_type">Tipo de Usuario</string>
+    <string name="btn_register">Crear Cuenta</string>
+    <string name="btn_create">Crear</string>
     <string name="err_rname">Nombre Invalido</string>
     <string name="err_rlastname">Apellido Invalido</string>
     <string name="err_rusername">Nombre de Usuario Invalido</string>
     <string name="err_rpassword">Contraseña Invalida</string>
     <string name="err_rpasswordagain">La repeticion de la contraseña debe ser igual a la contraseña</string>
     <string name="err_rphonenumber">Numero de Celular debe ser numero entero</string>
+
+    <string-array name="list_user_type">
+        <item>Cliente</item>
+        <item>Repartidor</item>
+    </string-array>
 </resources>

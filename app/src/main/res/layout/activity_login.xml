@@ -115,6 +115,15 @@
             android:text="@string/btn_enter"
             android:textColor="@android:color/background_light"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_register"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_register"
+            android:textColor="#2da948"
+            android:onClick="createAccountUser"/>
     </LinearLayout>
 
 </LinearLayout>

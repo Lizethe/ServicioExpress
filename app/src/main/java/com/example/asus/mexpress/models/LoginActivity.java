@@ -15,10 +15,15 @@ import com.example.asus.mexpress.Interfaces.ILoginView;
 import com.example.asus.mexpress.R;
 import com.example.asus.mexpress.presenters.LoginPresentex;
 
+import io.realm.Realm;
+import io.realm.RealmQuery;
+
 public class LoginActivity extends AppCompatActivity implements ILoginView {
     private EditText user, pwd;
     private ILoginPresentx loginPresentx;
     private SessionManager session;
+    private Realm myRealm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,16 +32,38 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         pwd = (EditText) findViewById(R.id.txt_password);
         session = new SessionManager(getApplicationContext());
         this.loginPresentx = new LoginPresentex(getApplicationContext(), this);
+        Realm.init(getApplicationContext());
+        this.myRealm = Realm.getDefaultInstance();
     }
 
-    public void validateFields(View view){
+    public void validateFields(View view) {
         String user_local = this.user.getText().toString();
         boolean validate = this.loginPresentx.validateFields(user_local, this.pwd.getText().toString());
-        session.saveUser(user_local);
-        if (validate){
+        if (validate && this.accountExists()) {
+            session.saveUser(user_local);
             Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
             startActivity(i);
         }
+    }
+
+    public boolean accountExists() {
+        String lUsername = this.user.getText().toString();
+        String lPasswd = this.pwd.getText().toString();
+        RealmQuery<User> userReg = this.myRealm.where(User.class)
+                .equalTo("username", lUsername)
+                .equalTo("password", lPasswd);
+        if (userReg.count() > 0) {
+            return true;
+        } else {
+            this.user.setError(this.getApplicationContext().getString(R.string.err_user_pass));
+            return false;
+        }
+
+    }
+
+    public void createAccountUser(View view) {
+        Intent i = new Intent(getApplicationContext(), CreateAccountUserActivity.class);
+        startActivity(i);
     }
 
     @Override

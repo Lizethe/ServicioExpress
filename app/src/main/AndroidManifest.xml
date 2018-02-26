@@ -27,13 +27,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".models.WelcomeActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".models.LoginActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".models.LoginActivity" />
         </activity>
         <activity android:name=".models.RegisterActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".models.WelcomeActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".models.WelcomeActivity" />
         </activity>
         <activity android:name=".models.ClientListActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".models.WelcomeActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".models.WelcomeActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -49,7 +55,8 @@
 
         <activity
             android:name=".models.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".models.CreateAccountUserActivity"></activity>
     </application>
 
 </manifest>
