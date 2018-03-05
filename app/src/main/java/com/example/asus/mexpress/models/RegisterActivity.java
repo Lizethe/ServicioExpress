@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.example.asus.mexpress.Interfaces.IRegisterClientPresentex;
 import com.example.asus.mexpress.Interfaces.IRegisterClientView;
 import com.example.asus.mexpress.R;
 import com.example.asus.mexpress.presenters.RegisterClientPresentex;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
@@ -32,12 +34,16 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class RegisterActivity extends AppCompatActivity implements IRegisterClientView {
-    private EditText name, lastName, phoneNumber, location, birthday;
+    private EditText name, lastName, phoneNumber, address, birthday;
     IRegisterClientPresentex iRegisterPresentex;
-    private ImageView photo;
+    private ImageView photo, map;
     private Uri imageUri;
-    private TextView title;
+    private TextView title, location_id;
     private static final int PICK_IMAGE = 100;
+    private static final Integer REQUEST_MAP = 52;
+    public static final String LATITUDE_IDENTIFIER = "latitude";
+    public static final String LONGITUDE_IDENTIFIER = "longitude";
+
     private Realm myRealm;
     private RecyclerView recyclerView;
     private SessionManager session;
@@ -54,6 +60,13 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
                 openGallery();
             }
         });
+        this.map = (ImageView) findViewById(R.id.img_button_map);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openMaps();
+            }
+        });
         title = (TextView) findViewById(R.id.lb_register);
         if (session.getType().equals("Administrator")) {
             title.setText("Person Register");
@@ -61,7 +74,8 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         this.name = (EditText) findViewById(R.id.txt_name);
         this.lastName = (EditText) findViewById(R.id.txt_lastname);
         this.phoneNumber = (EditText) findViewById(R.id.txt_phonenumber);
-        this.location = (EditText) findViewById(R.id.txt_location);
+        this.address = (EditText) findViewById(R.id.txt_location);
+        this.location_id = (TextView) findViewById(R.id.lb_location_id);
         this.birthday = (EditText) findViewById(R.id.txt_birthday);
         this.birthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,19 +102,45 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    private void openMaps() {
+        Intent i = new Intent(this, MapsActivity.class);
+        startActivityForResult(i, REQUEST_MAP);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imageUri = data.getData();
             photo.setImageURI(imageUri);
         }
+
+        if (resultCode == RESULT_OK && requestCode == REQUEST_MAP) {
+            final double latitude = data.getDoubleExtra(LATITUDE_IDENTIFIER, 0d);
+            final double longitude = data.getDoubleExtra(LONGITUDE_IDENTIFIER, 0d);
+
+            this.myRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    saveLocation(realm, latitude, longitude);
+                    map.setBackgroundColor(2);
+                }
+            });
+        }
     }
+
+    private void saveLocation(Realm realm, Double latitude, Double longitude) {
+        Location location = realm.createObject(Location.class, UUID.randomUUID().toString());
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        location_id.setText(location.getId());
+    }
+
 
     public void validateRegisterFields(View view) {
         String name = this.name.getText().toString();
         String lastName = this.lastName.getText().toString();
         String phoneNumber = this.phoneNumber.getText().toString();
-        String location = this.location.getText().toString();
+        String location = this.address.getText().toString();
         String birthday = this.birthday.getText().toString();
         boolean valid = this.iRegisterPresentex.validateRegisterFields(name, lastName, phoneNumber, location, birthday);
 
@@ -119,7 +159,8 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         person.setName(this.name.getText().toString());
         person.setLastName(this.lastName.getText().toString());
         person.setPhoneNumber(Integer.parseInt(this.phoneNumber.getText().toString()));
-        person.setLocation(this.location.getText().toString());
+        person.setAddress(this.address.getText().toString());
+        person.setLocationId(location_id.getText().toString());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         if (session.getType().equals("Client")) {
             person.setType(Type.DELIVERY_MAN.toString());
@@ -165,7 +206,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
 
     @Override
     public void setErrorLocation(String message) {
-        this.location.setError(message);
+        this.address.setError(message);
     }
 
     @Override

@@ -16,11 +16,12 @@ public class Person extends RealmObject {
     private String name;
     private String lastName;
     private Integer phoneNumber;
-    private String location;
+    private String address;
     private Date birthday;
     private byte[] photo;
     private String type;
     private String userId;
+    private String locationId;
     @Ignore
     private String age;
 
@@ -38,10 +39,6 @@ public class Person extends RealmObject {
 
     public Integer getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public String getLocation() {
-        return location;
     }
 
     public Date getBirthday() {
@@ -66,10 +63,6 @@ public class Person extends RealmObject {
 
     public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public void setBirthday(Date birthday) {
@@ -98,6 +91,22 @@ public class Person extends RealmObject {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
     }
 
     @Override

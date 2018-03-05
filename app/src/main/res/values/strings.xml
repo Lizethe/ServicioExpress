@@ -31,6 +31,7 @@
     <string name="lb_phonenumber">Phone Number</string>
     <string name="lb_location">Home Address</string>
     <string name="lb_birthday">Birthday</string>
+    <string name="lb_location_map">Set Location</string>
     <string name="lb_user_type">User Type</string>
     <string name="btn_register">Create Account</string>
     <string name="btn_create">Create</string>

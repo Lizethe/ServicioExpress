@@ -147,6 +147,43 @@
         android:weightSum="12">
 
         <TextView
+            android:id="@+id/lb_location_map"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:ems="3"
+            android:fontFamily="sans-serif"
+            android:gravity="right|center_vertical"
+            android:text="@string/lb_location_map"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/img_button_map"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:ems="1"
+            app:srcCompat="@android:drawable/ic_menu_mapmode" />
+
+        <TextView
+            android:id="@+id/lb_location_id"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="1"
+            android:fontFamily="sans-serif"
+            android:gravity="right|center_vertical"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="12">
+
+        <TextView
             android:id="@+id/lb_birthday"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

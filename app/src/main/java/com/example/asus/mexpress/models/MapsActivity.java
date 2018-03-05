@@ -1,5 +1,6 @@
 package com.example.asus.mexpress.models;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -37,6 +38,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
@@ -67,6 +70,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
+    public static final String LATITUDE_IDENTIFIER = "latitude";
+    public static final String LONGITUDE_IDENTIFIER = "longitude";
 
     // Used for selecting the current place.
     private static final int M_MAX_ENTRIES = 5;
@@ -198,8 +203,41 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 marker.setTitle("Location End: " + marker.getPosition().latitude + " " + marker.getPosition().longitude+"--"+marker.getSnippet());
+                openSaveLocationDialog(marker.getPosition());
             }
         });
+    }
+
+    private void openSaveLocationDialog(final LatLng latLng) {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        };
+        String[] test = new String[]{latLng.latitude+"", latLng.latitude+""};
+        // Display the dialog.
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Save your selected Location")
+                .setItems(test, listener)
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra(LATITUDE_IDENTIFIER, latLng.latitude);
+                        resultIntent.putExtra(LONGITUDE_IDENTIFIER, latLng.longitude);
+                        setResult(RegisterActivity.RESULT_OK, resultIntent);
+                        finish();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 
     /**

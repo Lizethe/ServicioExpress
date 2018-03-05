@@ -30,6 +30,7 @@
     <string name="lb_phonenumber">Nro de Celular</string>
     <string name="lb_location">Dirección</string>
     <string name="lb_birthday">Fecha de Nacimiento</string>
+    <string name="lb_location_map">Definir Localización</string>
     <string name="lb_user_type">Tipo de Usuario</string>
     <string name="btn_register">Crear Cuenta</string>
     <string name="btn_create">Crear</string>
