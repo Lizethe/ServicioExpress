@@ -47,8 +47,22 @@
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
     <string name="option_get_place">Get place</string>
     <string name="pick_place">Choose a place</string>
+
+    <string name="lb_registerperson">Person Register</string>
+    <string name="view_personlist">Person List</string>
+    <string name="view_deliverymanlist">Delivery Man List</string>
+    <string name="view_personlocation">Person Locations</string>
+    <string name="view_deliverymanlocation">Delivery Man Locations</string>
+    <string name="txt_latitude">Latitude</string>
+    <string name="txt_longitude">Logitude</string>
+    <string name="txt_savelocation">Save current Location?</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+
+
+
     <string-array name="list_user_type">
-        <item>Client</item>
-        <item>Delivery Man</item>
+        <item name="client_item">Client</item>
+        <item name="deliveryman_item">Delivery Man</item>
     </string-array>
 </resources>

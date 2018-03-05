@@ -41,6 +41,23 @@
     <string name="err_rpasswordagain">La repeticion de la contraseña debe ser igual a la contraseña</string>
     <string name="err_rphonenumber">Numero de Celular debe ser numero entero</string>
 
+    <string name="title_activity_maps">Detalle de Ubicación</string>
+    <string name="default_info_title">Localización por Defecto</string>
+    <string name="default_info_snippet">No se encuentra lugar. Por que el permiso esta deshabilitado</string>
+    <string name="option_get_place">Obtener Lugares cercanos</string>
+    <string name="pick_place">Seleccionar Lugar</string>
+
+    <string name="lb_registerperson">Registrar Persona</string>
+    <string name="view_personlist">Lista de Personas</string>
+    <string name="view_personlocation">Localización de Personas</string>
+    <string name="view_deliverymanlist">Lista de Repartidores</string>
+    <string name="view_deliverymanlocation">Localización de Repartidores</string>
+    <string name="txt_latitude">Latitud</string>
+    <string name="txt_longitude">Logitud</string>
+    <string name="txt_savelocation">¿Guardar ubicación marcada?</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_cancel">Cancelar</string>
+
     <string-array name="list_user_type">
         <item>Cliente</item>
         <item>Repartidor</item>

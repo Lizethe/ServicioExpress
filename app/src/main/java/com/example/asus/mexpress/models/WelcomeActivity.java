@@ -30,18 +30,15 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void verifyUserType() {
-        switch (session.getType()) {
-            case "Client":
-                register.setVisibility(View.GONE);
-                list.setText("Delivery Man List");
-                maps.setText("Delivery Man Locations");
-                break;
-            case "Administrator":
-                register.setVisibility(View.GONE);
-                list.setText("Person List");
-                maps.setText("Person Locations");
-                break;
-            default: break;
+        String type = session.getType();
+        if (type.equalsIgnoreCase("Client") || type.equalsIgnoreCase("Cliente")) {
+            register.setVisibility(View.GONE);
+            list.setText(getApplicationContext().getString(R.string.view_deliverymanlist));
+            maps.setText(getApplicationContext().getString(R.string.view_deliverymanlocation));
+        } else if (type.equalsIgnoreCase("Administrator")) {
+            register.setVisibility(View.GONE);
+            list.setText(getApplicationContext().getString(R.string.view_personlist));
+            maps.setText(getApplicationContext().getString(R.string.view_personlocation));
         }
     }
 
@@ -57,7 +54,13 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void showLocations(View view) {
         Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-        i.putExtra("origin","location_button");
+        i.putExtra("origin", "location_button");
+        startActivity(i);
+    }
+
+    public void sessionDestroy(View view) {
+        session.destroy();
+        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
     }
 }

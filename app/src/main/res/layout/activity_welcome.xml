@@ -35,7 +35,7 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:padding="20dp"
         app:srcCompat="@drawable/moto_express" />
@@ -96,4 +96,19 @@
         android:textStyle="bold"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="170dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        style="@android:style/Widget.Material.Light.ImageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/cast_abc_scrubber_control_off_mtrl_alpha"
+        android:padding="10dp"
+        android:onClick="sessionDestroy"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:srcCompat="@android:drawable/ic_lock_power_off" />
 </LinearLayout>

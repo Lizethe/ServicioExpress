@@ -51,15 +51,15 @@ public class PersonListActivity extends AppCompatActivity {
                 .equalTo("username", session.getUser())
                 .equalTo("type", session.getType()).findFirst();
         RealmResults<Person> list = null;
-        if (session.getType().equals("Client")) {
-            title.setText("Delivery Man List");
+        if (session.getType().equalsIgnoreCase("Client")||session.getType().equalsIgnoreCase("Cliente")) {
+            title.setText(getApplicationContext().getString(R.string.view_deliverymanlist));
             addPerson.setVisibility(View.GONE);
             userType = Type.DELIVERY_MAN;
             list = this.myRealm.where(Person.class)
                     .equalTo("type", userType.toString())
                     .findAll();
         } else if (session.getType().equals("Administrator")) {
-            title.setText("Person List");
+            title.setText(getApplicationContext().getString(R.string.view_personlist));
             list = this.myRealm.where(Person.class).findAll();
         } else {
             userType = Type.CLIENT;

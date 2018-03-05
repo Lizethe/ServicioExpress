@@ -69,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         });
         title = (TextView) findViewById(R.id.lb_register);
         if (session.getType().equals("Administrator")) {
-            title.setText("Person Register");
+            title.setText(getApplicationContext().getString(R.string.lb_registerperson));
         }
         this.name = (EditText) findViewById(R.id.txt_name);
         this.lastName = (EditText) findViewById(R.id.txt_lastname);
@@ -163,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
         person.setAddress(this.address.getText().toString());
         person.setLocationId(location_id.getText().toString());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        if (session.getType().equals("Client")) {
+        if (session.getType().equalsIgnoreCase("Administrator")) {
             person.setType(Type.DELIVERY_MAN.toString());
         } else {
             person.setType(Type.CLIENT.toString());

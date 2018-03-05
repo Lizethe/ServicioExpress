@@ -32,6 +32,11 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void destroy(){
+        editor.clear();
+        editor.commit();
+    }
+
     public String getType() {
         return pref.getString(TYPE, null);
     }
