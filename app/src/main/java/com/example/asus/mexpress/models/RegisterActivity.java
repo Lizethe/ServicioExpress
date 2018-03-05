@@ -104,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterClie
 
     private void openMaps() {
         Intent i = new Intent(this, MapsActivity.class);
+        i.putExtra("origin","register_activity");
         startActivityForResult(i, REQUEST_MAP);
     }
 

@@ -57,6 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void showLocations(View view) {
         Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+        i.putExtra("origin","location_button");
         startActivity(i);
     }
 }

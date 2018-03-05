@@ -1,6 +1,8 @@
 package com.example.asus.mexpress.models;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -31,6 +33,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -38,13 +42,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    private SessionManager session;
+    private Realm myRealm;
     private static final String TAG = MapsActivity.class.getSimpleName();
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
@@ -72,6 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String KEY_LOCATION = "location";
     public static final String LATITUDE_IDENTIFIER = "latitude";
     public static final String LONGITUDE_IDENTIFIER = "longitude";
+    private static final Integer REQUEST_MAP = 52;
 
     // Used for selecting the current place.
     private static final int M_MAX_ENTRIES = 5;
@@ -79,11 +89,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String[] mLikelyPlaceAddresses;
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
+    private boolean enableSaveMarked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        session = new SessionManager(getApplicationContext());
+        Realm.init(getApplicationContext());
+        this.myRealm = Realm.getDefaultInstance();
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -107,6 +120,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_MAP) {
+            enableSaveMarked = true;
+        } else {
+            enableSaveMarked = false;
+        }
     }
 
     /**
@@ -189,23 +211,77 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
-        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-            @Override
-            public void onMarkerDragStart(Marker marker) {
-                marker.setTitle("Location Start: " + marker.getPosition().latitude + " " + marker.getPosition().longitude);
+        Intent intent = this.getIntent();
+        String origin = intent.getExtras().getString("origin");
+        if (origin.equalsIgnoreCase("register_activity")) {
+            mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+                    marker.setTitle("Location Start: " + marker.getPosition().latitude + " " + marker.getPosition().longitude);
+                }
+
+                @Override
+                public void onMarkerDrag(Marker marker) {
+                    marker.setTitle("Location Dragging: " + marker.getPosition().latitude + " " + marker.getPosition().longitude);
+                }
+
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
+                    marker.setTitle("Location End: " + marker.getPosition().latitude + " " + marker.getPosition().longitude + "--" + marker.getSnippet());
+                    openSaveLocationDialog(marker.getPosition());
+                }
+            });
+        } else if (origin.equalsIgnoreCase("location_button")) {
+            List<Person> personList = getListPersonByUserType();
+
+            for (Person person : personList) {
+                String fullName = person.getName() + " " + person.getLastName();
+                Bitmap photo = BitmapFactory.decodeByteArray(person.getPhoto(), 0, person.getPhoto().length);
+                photo = Bitmap.createScaledBitmap(photo, 50, 60, false);
+                BitmapDescriptor defaultIcon = BitmapDescriptorFactory.fromBitmap(photo);
+
+                String location_id = person.getLocationId();
+                com.example.asus.mexpress.models.Location location = myRealm.where(com.example.asus.mexpress.models.Location.class)
+                        .equalTo("id", location_id).findFirst();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng)
+                        .title(getApplicationContext().getString(R.string.lb_name) + ": " + fullName)
+                        .snippet(getApplicationContext().getString(R.string.lb_phonenumber) + ": " + person.getPhoneNumber())
+                        .icon(defaultIcon);
+
+                mMap.addMarker(markerOptions);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
             }
 
-            @Override
-            public void onMarkerDrag(Marker marker) {
-                marker.setTitle("Location Dragging: " + marker.getPosition().latitude + " " + marker.getPosition().longitude);
-            }
+        }
+    }
 
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                marker.setTitle("Location End: " + marker.getPosition().latitude + " " + marker.getPosition().longitude+"--"+marker.getSnippet());
-                openSaveLocationDialog(marker.getPosition());
-            }
-        });
+    private ArrayList<Person> getListPersonByUserType() {
+        Type userType = null;
+        User userInSesion = this.myRealm.where(User.class)
+                .equalTo("username", session.getUser())
+                .equalTo("type", session.getType()).findFirst();
+        RealmResults<Person> list = null;
+        if (session.getType().equals("Client")) {
+            userType = Type.DELIVERY_MAN;
+            list = this.myRealm.where(Person.class)
+                    .equalTo("type", userType.toString())
+                    .findAll();
+        } else if (session.getType().equals("Administrator")) {
+            list = this.myRealm.where(Person.class).findAll();
+        } else {
+            userType = Type.CLIENT;
+            list = this.myRealm.where(Person.class)
+                    .equalTo("type", userType.toString())
+                    .equalTo("userId", userInSesion.getId())
+                    .findAll();
+        }
+
+        ArrayList<Person> list_persons = new ArrayList<>();
+        for (Person c : list) {
+            list_persons.add(c);
+        }
+        return list_persons;
     }
 
     private void openSaveLocationDialog(final LatLng latLng) {
@@ -215,7 +291,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         };
-        String[] test = new String[]{latLng.latitude+"", latLng.latitude+""};
+        String[] test = new String[]{latLng.latitude + "", latLng.latitude + ""};
         // Display the dialog.
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Save your selected Location")
