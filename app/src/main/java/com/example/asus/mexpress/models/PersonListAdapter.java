@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,7 +43,12 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Cl
         return this.list.size();
     }
 
-    public static class ClientListViewHolder extends RecyclerView.ViewHolder {
+    public void delete(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class ClientListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView txtName;
         private TextView txtPhone;
         private ImageView photo;
@@ -52,8 +58,20 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Cl
             txtName = (TextView) itemView.findViewById(R.id.txt_name);
             txtPhone = (TextView) itemView.findViewById(R.id.txt_phone);
             photo = (ImageView) itemView.findViewById(R.id.photo_in_list);
+            txtName.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+            txtName.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    return false;
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View view) {
+            delete(getAdapterPosition());
         }
     }
-
 }
 
